@@ -1,0 +1,15 @@
+---
+- name: TESting MUltiple Conditions in playbook
+  hosts: all
+  tasks:
+  - name: install the httpd package 
+    yum:
+      name: httpd
+      state: present
+    when: ( ansible_distribution == 'CentOS') or ( ansible_distribution == 'Ubuntu' )
+
+  - name: Install the apcahe2 package 
+    apt:
+      name: apache2
+      state: present
+    when: ( ansible_distribution == 'RedHat') and ( ansible_kernel == '4.18.0-305.el8.x86_64' )

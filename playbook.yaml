@@ -1,0 +1,41 @@
+---
+- name: check ping module
+  hosts: centos
+  tasks:
+  - name: run ping module
+    ansible.builtin.ping:
+  - name: Display something
+    ansible.builtin.debug:
+  - name: Display facts
+    ansible.builtin.debug:
+      var: ansible_facts['nodename']
+  - name: Display motd
+    ansible.builtin.template:
+      src: templates/motd.j2
+      dest: /etc/motd
+  - name: testing second task
+    ansible.builtin.debug:
+       msg: play1
+  - name: send jinja info to managed hosts
+    template:
+      src: templates/jinja.j2
+      dest: /etc/jinja
+      mode: 0644
+  - name: creating a config file
+    template:
+      src: templates/playbook31-host.j2
+      dest: /etc/myconfig.conf
+
+    vars:
+      my_servers:
+      - web_servers
+      - db_servers
+- hosts: webserver1
+  tasks:
+    - name: Connect to database
+      mysql_db:
+        host: "{{ hostvars['webserver1'][db_host']}}"
+        user: "{{ hostvars['webserver1']['db_user']}}"
+        password: "{{ hostvars['webserver1']['db_password']}}"
+        name: mydatabase
+

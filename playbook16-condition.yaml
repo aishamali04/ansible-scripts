@@ -1,0 +1,15 @@
+---
+- name: Conditions in playbook
+  hosts: centos
+  tasks:
+  - name: install the httpd package if the distribution is centos
+    yum:
+      name: httpd
+      state: present
+    when: ansible_distribution == 'CentOS'
+
+  - name: Install the apche2 package if the distribution is ubuntu
+    apt:
+      name: apache2
+      state: present
+    when: ansible_distribution == 'Ubuntu'
